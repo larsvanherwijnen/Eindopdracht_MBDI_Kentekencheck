@@ -11,10 +11,10 @@ struct ContentView: View {
                     .bold()
                 Text("Merk: \(voertuig.merk)")
                 Text("Model: \(voertuig.handelsbenaming)")
-                Text("Kleur: \(voertuig.eersteKleur)")
-                Text("Aantal Zitplaatsen: \(voertuig.aantalZitplaatsen)")
+                Text("Kleur: \(voertuig.eerste_kleur)")
+                Text("Aantal Zitplaatsen: \(voertuig.aantal_zitplaatsen)")
                 Text("Type: \(voertuig.type)")
-                Text("APK Vervaldatum: \(voertuig.vervaldatumAPK)")
+                Text("APK Vervaldatum: \(voertuig.vervaldatum_apk)")
             } else {
                 Text("Laden...")
             }
