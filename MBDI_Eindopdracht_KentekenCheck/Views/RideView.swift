@@ -7,19 +7,15 @@
 
 import SwiftUI
 
-struct Ride: Identifiable {
-    let id = UUID()
-    let name: String
-}
-
 struct RideView: View {
-    @State private var rides: [Ride] = [
-        Ride(name: "testride"),
-        Ride(name: "testride2"),
-    ]
+    @State private var rides: [Ride] = []
 
     @State private var isShowingPopup = false
     @State private var newRideName = ""
+
+    init() {
+        _rides = State(initialValue: loadRides())
+    }
 
     var body: some View {
         NavigationStack {
@@ -92,7 +88,25 @@ struct RideView: View {
     }
 
     private func addNewRide(name: String) {
-        rides.append(Ride(name: name))
+        let newRide = Ride(name: name)
+        rides.append(newRide)
+        saveRides()
+    }
+
+    private func saveRides() {
+        if let encoded = try? JSONEncoder().encode(rides) {
+            UserDefaults.standard.set(encoded, forKey: "SavedRides")
+        }
+    }
+
+    private func loadRides() -> [Ride] {
+        if let savedRides = UserDefaults.standard.data(forKey: "SavedRides"),
+            let decodedRides = try? JSONDecoder().decode(
+                [Ride].self, from: savedRides)
+        {
+            return decodedRides
+        }
+        return []
     }
 }
 
