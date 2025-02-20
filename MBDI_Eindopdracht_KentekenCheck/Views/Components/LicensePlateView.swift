@@ -1,10 +1,3 @@
-//
-//  LicensePlateView.swift
-//  MBDI_Eindopdracht_KentekenCheck
-//
-//  Created by Lars van Herwijnen on 20/02/2025.
-//
-
 import SwiftUI
 
 struct LicensePlateView: View {
