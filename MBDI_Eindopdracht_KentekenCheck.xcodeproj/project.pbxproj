@@ -11,11 +11,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F0AFA9E82D674FC10084B5F8 /* Shared */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Shared;
-			sourceTree = "<group>";
-		};
 		F5E6A3BC2D5CB90C00E9E3C4 /* MBDI_Eindopdracht_KentekenCheck */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = MBDI_Eindopdracht_KentekenCheck;
@@ -37,7 +32,6 @@
 		F5E6A3B12D5CB90C00E9E3C4 = {
 			isa = PBXGroup;
 			children = (
-				F0AFA9E82D674FC10084B5F8 /* Shared */,
 				F5E6A3BC2D5CB90C00E9E3C4 /* MBDI_Eindopdracht_KentekenCheck */,
 				F5E6A3BB2D5CB90C00E9E3C4 /* Products */,
 			);
@@ -67,7 +61,6 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				F0AFA9E82D674FC10084B5F8 /* Shared */,
 				F5E6A3BC2D5CB90C00E9E3C4 /* MBDI_Eindopdracht_KentekenCheck */,
 			);
 			name = MBDI_Eindopdracht_KentekenCheck;
