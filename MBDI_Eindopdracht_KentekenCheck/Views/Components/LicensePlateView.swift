@@ -36,11 +36,11 @@ struct LicensePlateView: View {
             if let errorMessage = rdwManager.errorMessage {
                 Text(errorMessage)
                     .foregroundColor(.red)
-            } else if let voertuig = rdwManager.voertuig {
+            } else if let vehicle = rdwManager.vehicle {
                 VStack {
-                    Text("Merk: \(voertuig.merk)")
-                    Text("Model: \(voertuig.handelsbenaming)")
-                    Text("APK Vervaldatum: \(voertuig.vervaldatum_apk)")
+                    Text("Merk: \(vehicle.merk)")
+                    Text("Model: \(vehicle.handelsbenaming)")
+                    Text("APK Vervaldatum: \(vehicle.vervaldatum_apk)")
                 }
                 .padding()
             }

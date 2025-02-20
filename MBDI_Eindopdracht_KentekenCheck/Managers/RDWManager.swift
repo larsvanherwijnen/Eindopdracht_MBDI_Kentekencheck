@@ -1,7 +1,7 @@
 import Foundation
 
 class RDWManager: ObservableObject {
-    @Published var voertuig: Voertuig?
+    @Published var vehicle: Vehicle?
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
 
@@ -37,13 +37,13 @@ class RDWManager: ObservableObject {
             let decoder = JSONDecoder()
 
             do {
-                let voertuigen = try decoder.decode([Voertuig].self, from: data)
+                let vehicles = try decoder.decode([Vehicle].self, from: data)
                 
                 DispatchQueue.main.async {
-                    if voertuigen.isEmpty {
+                    if vehicles.isEmpty {
                         self.errorMessage = "Geen data ontvangen"
                     } else {
-                        self.voertuig = voertuigen.first
+                        self.vehicle = vehicles.first
                     }
                 }
             } catch {
