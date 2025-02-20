@@ -36,7 +36,7 @@ struct LicensePlateView: View {
                 .textInputAutocapitalization(.characters)
                 .onSubmit {
                     if kenteken.count == 6 {
-                        rdwManager.fetchData(for: kenteken)
+                        rdwManager.getVehicle(for: kenteken)
                     }
                 }
             }
