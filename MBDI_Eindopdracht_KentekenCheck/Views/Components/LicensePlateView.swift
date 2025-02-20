@@ -8,28 +8,37 @@
 import SwiftUI
 
 struct LicensePlateView: View {
+    @Environment(\.colorScheme) var colorScheme
     @StateObject private var rdwManager = RDWManager()
     @State private var kenteken: String = ""
 
     var body: some View {
         VStack {
             ZStack {
-                Image("kentekenplaat")
+                Image("Kentekenplaat")
                     .resizable()
                     .scaledToFit()
                     .frame(height: 100)
 
-                TextField("Voer kenteken in", text: $kenteken)
-                    .multilineTextAlignment(.center)
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(.black)
-                    .frame(width: 200, height: 50)
-                    .textInputAutocapitalization(.characters)
-                    .onSubmit {
-                        if kenteken.count == 6 {
-                            rdwManager.fetchData(for: kenteken)
-                        }
+                TextField(
+                    "",
+                    text: $kenteken,
+                    prompt: Text("Voer kenteken in")
+                        .font(.system(size: 24))
+                        .fontWeight(.regular)
+                        .foregroundStyle(Color.licensePlateInput)
+                )
+                .multilineTextAlignment(.center)
+                .font(Font.custom("Kenteken", size: 30))
+                .foregroundStyle(Color.black)
+                .tint(Color.black)
+                .frame(width: 200, height: 50)
+                .textInputAutocapitalization(.characters)
+                .onSubmit {
+                    if kenteken.count == 6 {
+                        rdwManager.fetchData(for: kenteken)
                     }
+                }
             }
             .padding()
 
