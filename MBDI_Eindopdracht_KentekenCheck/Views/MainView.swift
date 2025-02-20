@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct ContentView: View {
-    @State private var voertuig: Voertuig?
+struct MainView: View {
+    @State private var voertuig: Vehicle?
 
     var body: some View {
         VStack {
@@ -74,7 +74,7 @@ struct ContentView: View {
 
         let decoder = JSONDecoder()
         do {
-            let voertuigen = try decoder.decode([Voertuig].self, from: jsonData)
+            let voertuigen = try decoder.decode([Vehicle].self, from: jsonData)
             DispatchQueue.main.async {
                 self.voertuig = voertuigen.first
             }
@@ -85,5 +85,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    MainView()
 }

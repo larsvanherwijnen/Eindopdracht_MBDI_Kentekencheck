@@ -1,6 +1,6 @@
 import Foundation
 
-struct Voertuig: Codable {
+struct Vehicle: Codable {
     let kenteken: String
     let voertuigsoort: String
     let merk: String
