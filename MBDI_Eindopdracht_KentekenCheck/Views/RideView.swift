@@ -11,7 +11,10 @@ struct RideView: View {
     @State private var rides: [Ride] = []
 
     @State private var isShowingPopup = false
+    @State private var isEditing = false
     @State private var newRideName = ""
+    
+    @Environment(\.editMode) private var editMode
 
     init() {
         _rides = State(initialValue: loadRides())
@@ -25,13 +28,16 @@ struct RideView: View {
                     .fontWeight(.bold)
                     .padding(.top)
 
-                List(rides) { ride in
-                    VStack(alignment: .leading) {
-                        Text(ride.name)
-                            .font(.headline)
+                List {
+                    ForEach(rides) { ride in
+                        VStack(alignment: .leading) {
+                            Text(ride.name)
+                                .font(.headline)
+                        }
                     }
-                    .padding(.vertical, 5)
+                    .onDelete(perform: deleteRide)
                 }
+                .environment(\.editMode, .constant(isEditing ? .active : .inactive))
 
                 Button(action: {
                     isShowingPopup = true
@@ -84,6 +90,17 @@ struct RideView: View {
                 }
                 .padding()
             }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        isEditing.toggle()
+                        editMode?.animation().wrappedValue =
+                            isEditing ? .active : .inactive
+                    }) {
+                        Text(isEditing ? "Klaar" : "Bewerken")
+                    }
+                }
+            }
         }
     }
 
@@ -91,6 +108,10 @@ struct RideView: View {
         let newRide = Ride(name: name)
         rides.append(newRide)
         saveRides()
+    }
+
+    private func deleteRide(at offsets: IndexSet) {
+        rides.remove(atOffsets: offsets)
     }
 
     private func saveRides() {
