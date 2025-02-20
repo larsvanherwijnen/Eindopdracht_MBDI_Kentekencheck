@@ -44,6 +44,7 @@ struct LicensePlateView: View {
                     Text("Model: \(vehicle.handelsbenaming)")
                     Text("APK Vervaldatum: \(vehicle.vervaldatum_apk)")
                 }
+                .frame(maxWidth: .infinity)
                 .padding()
             }
         }
