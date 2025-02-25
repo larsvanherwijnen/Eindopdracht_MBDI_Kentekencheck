@@ -13,6 +13,7 @@ struct RideView: View {
     @State private var isShowingPopup = false
     @State private var isEditing = false
     @State private var newRideName = ""
+    @State private var licensePlates: [String] = []
     
     @Environment(\.editMode) private var editMode
 
@@ -26,9 +27,11 @@ struct RideView: View {
 
                 List {
                     ForEach(rideStore.rides) { ride in
-                        VStack(alignment: .leading) {
+                        HStack(alignment: .center) {
                             Text(ride.name)
                                 .font(.headline)
+                            NavigationLink("Details", destination: RideDetailView(ride: ride))
+                                .buttonStyle(.borderedProminent)
                         }
                     }
                     .onDelete(perform: deleteRide)
@@ -59,9 +62,44 @@ struct RideView: View {
                     TextField("Rit naam", text: $newRideName)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
+                    
+                    VStack(alignment: .leading, spacing: 10) {
+                                Text("Kentekenplaten (optioneel)")
+                                    .font(.headline)
+                                    .padding(.bottom, 5)
 
+                                ForEach(licensePlates.indices, id: \.self) { index in
+                                    HStack {
+                                        TextField("Kentekenplaat \(index + 1)", text: $licensePlates[index])
+                                            .textFieldStyle(RoundedBorderTextFieldStyle())
+
+                                        // Button to remove a license plate
+                                        Button(action: {
+                                            licensePlates.remove(at: index)
+                                        }) {
+                                            Image(systemName: "minus.circle")
+                                                .foregroundColor(.red)
+                                        }
+                                    }
+                                }
+
+                                // Button to add a new license plate
+                                Button(action: {
+                                    licensePlates.append("")
+                                }) {
+                                    HStack {
+                                        Image(systemName: "plus.circle")
+                                        Text("Kentekenplaat toevoegen")
+                                    }
+                                    .foregroundColor(.blue)
+                                }
+                                .padding(.top, 5)
+                            }
+                            .padding(.horizontal)
+
+                    
                     Button(action: {
-                        addNewRide(name: newRideName)
+                        addNewRide(name: newRideName, licensePlates: licensePlates)
                         newRideName = ""
                         isShowingPopup = false
                     }) {
@@ -100,8 +138,8 @@ struct RideView: View {
         }
     }
 
-    private func addNewRide(name: String) {
-        rideStore.addRide(name: name)
+    private func addNewRide(name: String, licensePlates: [String]) {
+        rideStore.addRide(name: name, licensePlates: licensePlates)
     }
 
     private func deleteRide(at offsets: IndexSet) {
@@ -111,4 +149,5 @@ struct RideView: View {
 
 #Preview {
     RideView()
+        .environmentObject(RideStore())
 }

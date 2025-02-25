@@ -15,8 +15,8 @@ class RideStore: ObservableObject {
     }
     
     // Public methods to interact with the state
-    func addRide(name: String) {
-        let newRide = Ride(name: name)
+    func addRide(name: String, licensePlates: [String]) {
+        let newRide = Ride(name: name, licensePlates: licensePlates)
         rides.append(newRide)
         saveRides()
     }
