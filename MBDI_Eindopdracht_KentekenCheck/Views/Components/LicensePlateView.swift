@@ -3,7 +3,10 @@ import SwiftUI
 struct LicensePlateView: View {
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var rdwManager = RDWManager()
-    @State private var kenteken: String = ""
+    @StateObject private var licensePlate = LicensePlate()
+    
+    // Timer to handle debounce
+    @State private var debounceTimer: Timer?
 
     var body: some View {
         VStack {
@@ -15,7 +18,7 @@ struct LicensePlateView: View {
 
                 TextField(
                     "",
-                    text: $kenteken,
+                    text: $licensePlate.formattedLicensePlate,
                     prompt: Text("Voer kenteken in")
                         .font(.system(size: 24))
                         .fontWeight(.regular)
@@ -28,10 +31,9 @@ struct LicensePlateView: View {
                 .frame(width: 200, height: 50)
                 .textInputAutocapitalization(.characters)
                 .onSubmit {
-                    if kenteken.count == 6 {
-                        rdwManager.getVehicle(for: kenteken)
-                    }
+                    rdwManager.getVehicle(for: licensePlate)
                 }
+                
             }
             .padding()
 

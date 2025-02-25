@@ -9,8 +9,7 @@ struct MainView: View {
                 .font(Font.custom("Kenteken", size: 30))
                 .padding(.top)
             LicensePlateView()
-            //RideListView()
-            
+           
             List(rides) { ride in
                 VStack(alignment: .leading) {
                     Text(ride.name)

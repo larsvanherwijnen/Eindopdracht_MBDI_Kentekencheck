@@ -11,7 +11,7 @@ import SwiftUI
 struct MBDI_Eindopdracht_KentekenCheckApp: App {
     var body: some Scene {
         WindowGroup {
-            MainView()
+            LayoutView()
         }
     }
 }
