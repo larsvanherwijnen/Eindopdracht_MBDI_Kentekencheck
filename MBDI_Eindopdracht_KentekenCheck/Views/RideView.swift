@@ -8,17 +8,13 @@
 import SwiftUI
 
 struct RideView: View {
-    @State private var rides: [Ride] = []
+    @EnvironmentObject var rideStore: RideStore
 
     @State private var isShowingPopup = false
     @State private var isEditing = false
     @State private var newRideName = ""
     
     @Environment(\.editMode) private var editMode
-
-    init() {
-        _rides = State(initialValue: loadRides())
-    }
 
     var body: some View {
         NavigationStack {
@@ -29,7 +25,7 @@ struct RideView: View {
                     .padding(.top)
 
                 List {
-                    ForEach(rides) { ride in
+                    ForEach(rideStore.rides) { ride in
                         VStack(alignment: .leading) {
                             Text(ride.name)
                                 .font(.headline)
@@ -105,29 +101,11 @@ struct RideView: View {
     }
 
     private func addNewRide(name: String) {
-        let newRide = Ride(name: name)
-        rides.append(newRide)
-        saveRides()
+        rideStore.addRide(name: name)
     }
 
     private func deleteRide(at offsets: IndexSet) {
-        rides.remove(atOffsets: offsets)
-    }
-
-    private func saveRides() {
-        if let encoded = try? JSONEncoder().encode(rides) {
-            UserDefaults.standard.set(encoded, forKey: "SavedRides")
-        }
-    }
-
-    private func loadRides() -> [Ride] {
-        if let savedRides = UserDefaults.standard.data(forKey: "SavedRides"),
-            let decodedRides = try? JSONDecoder().decode(
-                [Ride].self, from: savedRides)
-        {
-            return decodedRides
-        }
-        return []
+        rideStore.deleteRide(at: offsets)
     }
 }
 

@@ -1,0 +1,42 @@
+//
+//  RideStore.swift
+//  MBDI_Eindopdracht_KentekenCheck
+//
+//  Created by Mike de Groot on 25/02/2025.
+//
+
+import Foundation
+
+class RideStore: ObservableObject {
+    @Published private(set) var rides: [Ride] = []
+    
+    init() {
+        loadRides()
+    }
+    
+    // Public methods to interact with the state
+    func addRide(name: String) {
+        let newRide = Ride(name: name)
+        rides.append(newRide)
+        saveRides()
+    }
+    
+    func deleteRide(at offsets: IndexSet) {
+        rides.remove(atOffsets: offsets)
+        saveRides()
+    }
+    
+    // Private methods to handle persistence
+    private func saveRides() {
+        if let encoded = try? JSONEncoder().encode(rides) {
+            UserDefaults.standard.set(encoded, forKey: "SavedRides")
+        }
+    }
+    
+    private func loadRides() {
+        if let savedRides = UserDefaults.standard.data(forKey: "SavedRides"),
+           let decodedRides = try? JSONDecoder().decode([Ride].self, from: savedRides) {
+            self.rides = decodedRides
+        }
+    }
+}

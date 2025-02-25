@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 struct Ride: Identifiable, Codable {
     var id = UUID()
