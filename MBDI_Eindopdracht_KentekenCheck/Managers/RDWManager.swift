@@ -8,8 +8,9 @@ class RDWManager: ObservableObject {
     @Published var errorMessage: String?
 
     func getVehicle(for licensePlate: LicensePlate) {
-        let urlString =
-            "https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=\(licensePlate)"
+        print("Manager" + licensePlate.rawLicensePlate)
+        
+        let urlString = "https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=\(licensePlate.rawLicensePlate)"
 
         guard let url = URL(string: urlString) else {
             DispatchQueue.main.async {

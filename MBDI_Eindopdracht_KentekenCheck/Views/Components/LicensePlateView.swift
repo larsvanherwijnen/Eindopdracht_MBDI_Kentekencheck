@@ -18,7 +18,8 @@ struct LicensePlateView: View {
 
                 TextField(
                     "",
-                    text: $licensePlate.formattedLicensePlate,
+                    text:
+                        $licensePlate.rawLicensePlate,
                     prompt: Text("Voer kenteken in")
                         .font(.system(size: 24))
                         .fontWeight(.regular)
@@ -33,6 +34,7 @@ struct LicensePlateView: View {
                 .onSubmit {
                     rdwManager.getVehicle(for: licensePlate)
                 }
+                
                 
             }
             .padding()
