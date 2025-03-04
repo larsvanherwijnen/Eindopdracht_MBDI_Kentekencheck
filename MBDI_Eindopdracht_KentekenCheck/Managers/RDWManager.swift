@@ -7,11 +7,10 @@ class RDWManager: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
 
-    func getVehicle(for kenteken: String) {
-        guard kenteken.count == 6 else { return }  // Ensure 6 characters
-
-        let urlString =
-            "https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=\(kenteken.uppercased())"
+    func getVehicle(for licensePlate: LicensePlate) {
+        print("Manager" + licensePlate.rawLicensePlate)
+        
+        let urlString = "https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=\(licensePlate.rawLicensePlate)"
 
         guard let url = URL(string: urlString) else {
             DispatchQueue.main.async {

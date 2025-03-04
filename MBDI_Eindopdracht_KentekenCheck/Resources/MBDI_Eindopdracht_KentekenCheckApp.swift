@@ -14,6 +14,7 @@ struct MBDI_Eindopdracht_KentekenCheckApp: App {
     var body: some Scene {
         WindowGroup {
             LayoutView()
+
                 .environmentObject(rideStore)
         }
     }

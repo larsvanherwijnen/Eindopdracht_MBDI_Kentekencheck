@@ -7,7 +7,18 @@ struct MainView: View {
                 .font(Font.custom("Kenteken", size: 30))
                 .padding(.top)
             LicensePlateView()
+
+           
+            List(rides) { ride in
+                VStack(alignment: .leading) {
+                    Text(ride.name)
+                        .font(.headline)
+                }
+                .padding(.vertical, 5)
+            }
+
             RideListView()
+
         }
         .padding(.horizontal)
     }
