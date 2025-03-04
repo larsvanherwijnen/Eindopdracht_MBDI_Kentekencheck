@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct MBDI_Eindopdracht_KentekenCheckApp: App {
+    @StateObject private var rideStore = RideStore()
+    
     var body: some Scene {
         WindowGroup {
             LayoutView()
+
+                .environmentObject(rideStore)
         }
     }
 }
