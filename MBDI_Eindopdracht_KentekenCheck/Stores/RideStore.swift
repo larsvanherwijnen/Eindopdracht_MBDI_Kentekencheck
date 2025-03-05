@@ -14,7 +14,6 @@ class RideStore: ObservableObject {
         loadRides()
     }
     
-    // Public methods to interact with the state
     func addRide(name: String, licensePlates: [String]) {
         let newRide = Ride(name: name, licensePlates: licensePlates)
         rides.append(newRide)
@@ -26,7 +25,6 @@ class RideStore: ObservableObject {
         saveRides()
     }
     
-    // Private methods to handle persistence
     private func saveRides() {
         if let encoded = try? JSONEncoder().encode(rides) {
             UserDefaults.standard.set(encoded, forKey: "SavedRides")

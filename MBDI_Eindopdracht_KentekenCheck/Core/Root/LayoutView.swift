@@ -12,7 +12,7 @@ struct LayoutView: View {
     var body: some View {
         TabView {
             Tab("Home", systemImage: "house") {
-                MainView()
+                LicensePlateCheckView()
             }
             
             Tab("Ritten", systemImage: "car.fill") {
