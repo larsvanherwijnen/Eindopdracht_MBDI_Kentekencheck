@@ -4,7 +4,7 @@ struct RideDetailView: View {
     var ride: Ride
     @StateObject private var rdwManager = RDWManager()
     @State private var selectedVehicle: Vehicle?
-    @State private var isSheetPresented = false
+    @State private var selectedLicensePlate: String?  
 
     var body: some View {
         VStack {
@@ -18,14 +18,11 @@ struct RideDetailView: View {
 
                     Button(action: {
                         rdwManager.getVehicle(for: licensePlate) { vehicle in
-                            if let vehicle = vehicle {
-                                DispatchQueue.main.async {
-                                    selectedVehicle = vehicle
-                                }
+                            DispatchQueue.main.async {
+                                selectedVehicle = vehicle
+                                selectedLicensePlate = plate
                             }
                         }
-                        
-                        isSheetPresented = true
                     }) {
                         HStack {
                             Text(LicensePlateFormatter.format(plate))
@@ -38,9 +35,9 @@ struct RideDetailView: View {
                         .padding(.vertical, 8)
                     }
                     .sheet(
-                        isPresented: $isSheetPresented,
+                        isPresented: .constant(selectedLicensePlate == plate),
                         onDismiss: {
-                            selectedVehicle = nil
+                            selectedLicensePlate = nil
                         }
                     ) {
                         if let vehicle = selectedVehicle {
@@ -62,5 +59,6 @@ struct RideDetailView: View {
 }
 
 #Preview {
-    RideDetailView(ride: Ride(name: "Test Ride", licensePlates: ["AA124B"]))
+    RideDetailView(
+        ride: Ride(name: "Test Ride", licensePlates: ["XX123X", "GLK70Z"]))
 }

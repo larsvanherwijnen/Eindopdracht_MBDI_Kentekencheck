@@ -30,7 +30,7 @@ struct RideView: View {
                         HStack(alignment: .center) {
     
                             NavigationLink(ride.name, destination: RideDetailView(ride: ride))
-                                .buttonStyle(.borderedProminent)
+                            .buttonStyle(.borderedProminent)
                         }
                     }
                     .onDelete(perform: deleteRide)
