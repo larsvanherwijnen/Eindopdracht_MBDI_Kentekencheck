@@ -18,13 +18,15 @@ struct LicensePlateCheckView: View {
                 LicensePlateInputView(licensePlate: $rawLicensePlate)
 
                 Button(action: {
-                    let licensePlate = LicensePlate(rawLicensePlate: rawLicensePlate)
-                    rdwManager.getVehicle(for: licensePlate)
+                    let licensePlate = LicensePlate(
+                        rawLicensePlate: rawLicensePlate)
 
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        if let vehicle = rdwManager.vehicle {
-                            selectedVehicle = vehicle
-                            navigateToCarView = true
+                    rdwManager.getVehicle(for: licensePlate) { vehicle in
+                        if let vehicle = vehicle {
+                            DispatchQueue.main.async {
+                                selectedVehicle = vehicle
+                                navigateToCarView = true
+                            }
                         }
                     }
                 }) {
@@ -50,21 +52,25 @@ struct LicensePlateCheckView: View {
                             .padding(.top)
 
                         List(recentPlates, id: \.self) { plate in
-                            let licensePlate = LicensePlate(rawLicensePlate: plate)
+                            let licensePlate = LicensePlate(
+                                rawLicensePlate: plate)
 
                             Button(action: {
-                                rdwManager.getVehicle(for: licensePlate)
-
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                    if let vehicle = rdwManager.vehicle {
-                                        selectedVehicle = vehicle
-                                        navigateToCarView = true
+                                rdwManager.getVehicle(for: licensePlate) {
+                                    vehicle in
+                                    if let vehicle = vehicle {
+                                        DispatchQueue.main.async {
+                                            selectedVehicle = vehicle
+                                            navigateToCarView = true
+                                        }
                                     }
                                 }
                             }) {
                                 Text(licensePlate.formattedLicensePlate)
                                     .padding()
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .frame(
+                                        maxWidth: .infinity, alignment: .leading
+                                    )
                             }
                             .background(Color(.systemGray6))
                             .cornerRadius(8)
@@ -96,4 +102,3 @@ struct LicensePlateCheckView: View {
 #Preview {
     LicensePlateCheckView()
 }
-

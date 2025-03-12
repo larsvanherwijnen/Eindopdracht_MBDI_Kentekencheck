@@ -9,44 +9,53 @@ class RDWManager: ObservableObject {
     private let recentPlatesKey = "RecentLicensePlates"
     private let vehicleCachePrefix = "Vehicle_"
 
-    func getVehicle(for licensePlate: LicensePlate) {
+    func getVehicle(for licensePlate: LicensePlate, completion: @escaping (Vehicle?) -> Void) {
         let plateNumber = licensePlate.rawLicensePlate.uppercased()
-
         let urlString = "https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=\(plateNumber)"
 
         guard let url = URL(string: urlString) else {
-            self.errorMessage = "Ongeldige URL"
+            DispatchQueue.main.async {
+                self.errorMessage = "Ongeldige URL"
+                completion(nil)
+            }
             return
         }
 
         isLoading = true
         errorMessage = nil
 
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            DispatchQueue.main.async { self.isLoading = false }
+        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            DispatchQueue.main.async { self?.isLoading = false }
 
-            guard let data = data else {
-                DispatchQueue.main.async { self.errorMessage = "Geen data ontvangen" }
+            guard let self = self, let data = data else {
+                DispatchQueue.main.async {
+                    self?.errorMessage = "Geen data ontvangen"
+                    completion(nil)
+                }
                 return
             }
 
             do {
                 let vehicles = try JSONDecoder().decode([Vehicle].self, from: data)
                 DispatchQueue.main.async {
-                    if vehicles.isEmpty {
-                        self.errorMessage = "Geen voertuig gevonden"
-                    } else {
-                        self.vehicle = vehicles.first
+                    if let firstVehicle = vehicles.first {
+                        self.vehicle = firstVehicle
                         self.updateRecentPlates(plateNumber)
+                        completion(firstVehicle) // ✅ Call completion with vehicle
+                    } else {
+                        self.errorMessage = "Geen voertuig gevonden"
+                        completion(nil)
                     }
                 }
             } catch {
                 DispatchQueue.main.async {
                     self.errorMessage = "Decoderen mislukt: \(error.localizedDescription)"
+                    completion(nil)
                 }
             }
         }.resume()
     }
+
 
     private func updateRecentPlates(_ plate: String) {
         var recentPlates = loadRecentPlates()

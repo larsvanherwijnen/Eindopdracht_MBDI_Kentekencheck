@@ -5,28 +5,27 @@ struct RideDetailView: View {
     @StateObject private var rdwManager = RDWManager()
     @State private var selectedVehicle: Vehicle?
     @State private var isSheetPresented = false
-    
+
     var body: some View {
         VStack {
             Text("Voertuigen")
                 .font(.title)
                 .fontWeight(.bold)
-            
+
             List {
                 ForEach(ride.licensePlates, id: \.self) { plate in
                     let licensePlate = LicensePlate(rawLicensePlate: plate)
-                    
-                    Button(action: {
-                        // Fetch the vehicle data
-                        rdwManager.getVehicle(for: licensePlate)
 
-                        // Delay the sheet presentation to ensure the vehicle is fetched
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            if let vehicle = rdwManager.vehicle {
-                                selectedVehicle = vehicle
-                                isSheetPresented = true
+                    Button(action: {
+                        rdwManager.getVehicle(for: licensePlate) { vehicle in
+                            if let vehicle = vehicle {
+                                DispatchQueue.main.async {
+                                    selectedVehicle = vehicle
+                                }
                             }
                         }
+                        
+                        isSheetPresented = true
                     }) {
                         HStack {
                             Text(LicensePlateFormatter.format(plate))
@@ -38,13 +37,20 @@ struct RideDetailView: View {
                         }
                         .padding(.vertical, 8)
                     }
-                    // Use sheet to show the CarView
-                    .sheet(isPresented: $isSheetPresented, onDismiss: {
-                        // Reset selectedVehicle when the sheet is dismissed
-                        selectedVehicle = nil
-                    }) {
+                    .sheet(
+                        isPresented: $isSheetPresented,
+                        onDismiss: {
+                            selectedVehicle = nil
+                        }
+                    ) {
                         if let vehicle = selectedVehicle {
                             CarView(vehicle: vehicle)
+                        } else {
+                            if let errorMessage = rdwManager.errorMessage {
+                                Text(errorMessage)
+                                    .foregroundColor(.red)
+                                    .padding()
+                            }
                         }
                     }
                 }
@@ -56,5 +62,5 @@ struct RideDetailView: View {
 }
 
 #Preview {
-    RideDetailView(ride: Ride(name: "Test Ride", licensePlates: ["XX-123-X"]))
+    RideDetailView(ride: Ride(name: "Test Ride", licensePlates: ["AA124B"]))
 }
