@@ -24,4 +24,5 @@ struct LayoutView: View {
 
 #Preview {
     LayoutView()
+        .environmentObject(RideStore())
 }

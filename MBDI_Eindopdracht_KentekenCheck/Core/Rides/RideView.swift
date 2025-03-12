@@ -28,14 +28,14 @@ struct RideView: View {
                 List {
                     ForEach(rideStore.rides) { ride in
                         HStack(alignment: .center) {
-                            Text(ride.name)
-                                .font(.headline)
-                            NavigationLink("Details", destination: RideDetailView(ride: ride))
+    
+                            NavigationLink(ride.name, destination: RideDetailView(ride: ride))
                                 .buttonStyle(.borderedProminent)
                         }
                     }
                     .onDelete(perform: deleteRide)
                 }
+            
                 .environment(\.editMode, .constant(isEditing ? .active : .inactive))
 
                 Button(action: {
@@ -73,7 +73,6 @@ struct RideView: View {
                                         TextField("Kentekenplaat \(index + 1)", text: $licensePlates[index])
                                             .textFieldStyle(RoundedBorderTextFieldStyle())
 
-                                        // Button to remove a license plate
                                         Button(action: {
                                             licensePlates.remove(at: index)
                                         }) {
@@ -83,7 +82,6 @@ struct RideView: View {
                                     }
                                 }
 
-                                // Button to add a new license plate
                                 Button(action: {
                                     licensePlates.append("")
                                 }) {
