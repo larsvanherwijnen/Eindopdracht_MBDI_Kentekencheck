@@ -41,7 +41,7 @@ class RDWManager: ObservableObject {
                     if let firstVehicle = vehicles.first {
                         self.vehicle = firstVehicle
                         self.updateRecentPlates(plateNumber)
-                        completion(firstVehicle) // ✅ Call completion with vehicle
+                        completion(firstVehicle)
                     } else {
                         self.errorMessage = "Geen voertuig gevonden"
                         completion(nil)

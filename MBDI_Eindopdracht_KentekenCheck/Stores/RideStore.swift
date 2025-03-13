@@ -9,31 +9,44 @@ import Foundation
 
 class RideStore: ObservableObject {
     @Published private(set) var rides: [Ride] = []
-    
+
     init() {
         loadRides()
     }
-    
+
     func addRide(name: String, licensePlates: [String]) {
         let newRide = Ride(name: name, licensePlates: licensePlates)
         rides.append(newRide)
         saveRides()
     }
-    
+
+    func updateRide(id: UUID, name: String, licensePlates: [String]) {
+        if let index = rides.firstIndex(where: { $0.id == id }) {
+            rides[index] = Ride(
+                id: id, name: name, licensePlates: licensePlates)
+        }
+        
+        print(rides)
+        
+        saveRides()
+    }
+
     func deleteRide(at offsets: IndexSet) {
         rides.remove(atOffsets: offsets)
         saveRides()
     }
-    
+
     private func saveRides() {
         if let encoded = try? JSONEncoder().encode(rides) {
             UserDefaults.standard.set(encoded, forKey: "SavedRides")
         }
     }
-    
+
     private func loadRides() {
         if let savedRides = UserDefaults.standard.data(forKey: "SavedRides"),
-           let decodedRides = try? JSONDecoder().decode([Ride].self, from: savedRides) {
+            let decodedRides = try? JSONDecoder().decode(
+                [Ride].self, from: savedRides)
+        {
             self.rides = decodedRides
         }
     }

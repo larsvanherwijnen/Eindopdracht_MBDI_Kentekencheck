@@ -30,7 +30,7 @@ struct RideView: View {
                         HStack(alignment: .center) {
     
                             NavigationLink(ride.name, destination: RideDetailView(ride: ride))
-                            .buttonStyle(.borderedProminent)
+                                .buttonStyle(.borderedProminent)
                         }
                     }
                     .onDelete(perform: deleteRide)
@@ -54,73 +54,7 @@ struct RideView: View {
             }
             .padding(.horizontal)
             .sheet(isPresented: $isShowingPopup) {
-                VStack(spacing: 20) {
-                    Text("Maak rit aan")
-                        .font(.title2)
-                        .fontWeight(.bold)
-
-                    TextField("Rit naam", text: $newRideName)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                    
-                    VStack(alignment: .leading, spacing: 10) {
-                                Text("Kentekenplaten (optioneel)")
-                                    .font(.headline)
-                                    .padding(.bottom, 5)
-
-                                ForEach(licensePlates.indices, id: \.self) { index in
-                                    HStack {
-                                        TextField("Kentekenplaat \(index + 1)", text: $licensePlates[index])
-                                            .textFieldStyle(RoundedBorderTextFieldStyle())
-
-                                        Button(action: {
-                                            licensePlates.remove(at: index)
-                                        }) {
-                                            Image(systemName: "minus.circle")
-                                                .foregroundColor(.red)
-                                        }
-                                    }
-                                }
-
-                                Button(action: {
-                                    licensePlates.append("")
-                                }) {
-                                    HStack {
-                                        Image(systemName: "plus.circle")
-                                        Text("Kentekenplaat toevoegen")
-                                    }
-                                    .foregroundColor(.blue)
-                                }
-                                .padding(.top, 5)
-                            }
-                            .padding(.horizontal)
-
-                    
-                    Button(action: {
-                        addNewRide(name: newRideName, licensePlates: licensePlates)
-                        newRideName = ""
-                        isShowingPopup = false
-                    }) {
-                        Text("Rit aanmaken")
-                            .font(.headline)
-                            .foregroundStyle(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.blue)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .padding(.horizontal)
-                    }
-
-                    Button(action: {
-                        isShowingPopup = false
-                    }) {
-                        Text("Annuleren")
-                            .font(.headline)
-                            .foregroundStyle(.red)
-                            .padding()
-                    }
-                }
-                .padding()
+                RideFormView()
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -134,10 +68,6 @@ struct RideView: View {
                 }
             }
         }
-    }
-
-    private func addNewRide(name: String, licensePlates: [String]) {
-        rideStore.addRide(name: name, licensePlates: licensePlates)
     }
 
     private func deleteRide(at offsets: IndexSet) {
