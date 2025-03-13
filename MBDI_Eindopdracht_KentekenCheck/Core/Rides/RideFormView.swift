@@ -77,7 +77,7 @@ struct RideFormView: View {
 
             Section {
                 Button(action: saveRide) {
-                    Text(ride != nil ? "Wijzigen" : "Opslaan") // Change button text if editing
+                    Text(ride != nil ? "Wijzigen" : "Opslaan")
                         .frame(maxWidth: .infinity)
                 }
                 .disabled(rideName.isEmpty || !invalidPlates.isEmpty)
@@ -87,23 +87,19 @@ struct RideFormView: View {
     
     private func saveRide() {
         guard !rideName.isEmpty, invalidPlates.isEmpty else { return }
-
-        print("Test 1")
         
+        let nonEmptyPlates = licensePlates.filter { !$0.isEmpty }
+
         if let ride = ride {
-            print("Test 2")
             rideStore.updateRide(
                 id: ride.id,
                 name: rideName,
                 licensePlates: licensePlates
             )
-            print("Test 3")
         } else {
-            rideStore.addRide(name: rideName, licensePlates: licensePlates)
+            rideStore.addRide(name: rideName, licensePlates: nonEmptyPlates)
         }
         
-        
-
         dismiss()
     }
 

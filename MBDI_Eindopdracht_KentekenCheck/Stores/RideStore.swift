@@ -26,8 +26,6 @@ class RideStore: ObservableObject {
                 id: id, name: name, licensePlates: licensePlates)
         }
         
-        print(rides)
-        
         saveRides()
     }
 

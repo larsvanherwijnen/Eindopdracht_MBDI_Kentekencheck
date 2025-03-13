@@ -3,7 +3,7 @@ import Foundation
 class LicensePlate: ObservableObject {
     @Published var rawLicensePlate: String = "" {
         didSet {
-            formatLicensePlate() // ✅ Call the formatting function when rawLicensePlate changes
+            formatLicensePlate() 
         }
     }
     
